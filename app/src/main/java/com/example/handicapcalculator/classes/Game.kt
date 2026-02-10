@@ -7,8 +7,6 @@ data class Game(
     val date: Date,
     val score: Int
 ) : Comparable<Game> {
-
-
     // Compare by date
     override fun compareTo(other: Game): Int {
         return date.compareTo(other.date)
