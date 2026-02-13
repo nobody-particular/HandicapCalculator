@@ -1,9 +1,15 @@
 package com.example.handicapcalculator.classes
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+// Class to represent a player
+@Entity(tableName = "players")
 class Player(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val games: MutableList<Game>,
-    val bestGames: MutableList<Game>
+    val bestGames: MutableList<Game> = mutableListOf<Game>() // The 8 games with the lowest adjusted gross score
 ) : Comparable<Player> {
     // Compare by name
     override fun compareTo(other: Player): Int {
@@ -33,6 +39,7 @@ class Player(
         return sum / bestGames.size
     }
 
+    // Find the course handicap with the handicap index
     fun calculateCourseHandicap() : Int {
         val handicapIndex = calculateHandicapIndex()
         for ((min, handicap) in courseHandicapMap) {
