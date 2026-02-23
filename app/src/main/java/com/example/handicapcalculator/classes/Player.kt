@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 class Player(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val games: MutableList<Game>,
+    val games: MutableList<Game>  = mutableListOf<Game>(),
     val bestGames: MutableList<Game> = mutableListOf<Game>() // The 8 games with the lowest adjusted gross score
 ) : Comparable<Player> {
     // Compare by name

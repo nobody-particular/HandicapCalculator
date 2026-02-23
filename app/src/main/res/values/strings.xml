@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Handicap Calculator</string>
     <string name="player_list_title">Player List</string>
+    <string name="add_player_title">Add Player</string>
+    <string name="player_name_hint">Player name…</string>
+    <string name="save_button_text">Save Player</string>
 </resources>
