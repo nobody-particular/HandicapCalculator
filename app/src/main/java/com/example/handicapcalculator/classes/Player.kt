@@ -35,6 +35,9 @@ class Player(
     // Calculate the handicap index with the 8 games with the lowest adjusted gross score
     fun calculateHandicapIndex() : Double {
         findBestGames()
+        if (bestGames.isEmpty()) {
+            return 0.0
+        }
         val sum = bestGames.sumOf { it.calculateHandicapDifferential() }
         return sum / bestGames.size
     }

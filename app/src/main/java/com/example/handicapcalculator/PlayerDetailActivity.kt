@@ -40,7 +40,10 @@ class PlayerDetailActivity : AppCompatActivity() {
 
             player?.let {
                 binding.titleText.text = it.name
-                binding.idText.text = playerId.toString()
+                binding.handicapText.text =
+                    getString(R.string.course_handicap_text, it.calculateCourseHandicap().toString())
+                binding.indexText.text =
+                    getString(R.string.handicap_index_text, it.calculateHandicapIndex().toString())
             }
         }
 

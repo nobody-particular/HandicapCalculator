@@ -5,4 +5,6 @@
     <string name="player_name_hint">Player name…</string>
     <string name="save_button_text">Save Player</string>
     <string name="delete_button_text">Delete Player</string>
+    <string name="course_handicap_text">Course Handicap: %1$s</string>
+    <string name="handicap_index_text">Handicap Index: %1$s</string>
 </resources>
