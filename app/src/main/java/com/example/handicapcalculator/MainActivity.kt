@@ -7,18 +7,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.handicapcalculator.adapters.PlayerAdapter
-import com.example.handicapcalculator.classes.Game
 import com.example.handicapcalculator.classes.Player
 import com.example.handicapcalculator.database.AppDatabase
 import com.example.handicapcalculator.databinding.ActivityMainBinding
-import com.example.handicapcalculator.databinding.ActivityPlayerDetailBinding
+import kotlinx.coroutines.launch
 
 // Activity for displaying the player list
 class MainActivity : AppCompatActivity() {
-    private var players = mutableListOf<Player>(Player(1, "Joe", mutableListOf<Game>()))
+    private var players = mutableListOf<Player>()
     private lateinit var adapter: PlayerAdapter
     private lateinit var binding: ActivityMainBinding
     private val database by lazy { AppDatabase.getDatabase(this) }
@@ -48,13 +47,25 @@ class MainActivity : AppCompatActivity() {
         // Set the layoutManager to be linear
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
+        lifecycleScope.launch {
+            // Fetch all players from Room
+            val playersFromDatabase = database.playerDao().getAllPlayers()
+
+            // Update the local list and notify adapter
+            players.clear()
+            players.addAll(playersFromDatabase)
+            for (i in 0..<players.size) {
+                adapter.notifyItemInserted(i)
+            }
+        }
+
         // Create a launcher for adding a player
         val addPlayerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val name = result.data?.getStringExtra("PLAYER_NAME") ?: ""
 
                 // Create the new player and save it to the database
-                val newPlayer = Player(name = name)
+                val newPlayer = Player(players.size + 1, name = name)
                 savePlayer(newPlayer)
             }
         }
@@ -68,6 +79,16 @@ class MainActivity : AppCompatActivity() {
 
     // Save a player to the database
     private fun savePlayer(player: Player) {
+        lifecycleScope.launch {
+            // Insert player into database
+            database.playerDao().insertPlayer(player)
+
+            // Notify adapter of the player inserted
+            adapter.notifyItemInserted(players.size + 1)
+
+            // Insert player into players
+            players.add(player)
+        }
     }
 
     // Delete a player from the database

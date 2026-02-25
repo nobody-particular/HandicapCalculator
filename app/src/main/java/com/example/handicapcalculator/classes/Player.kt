@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 // Class to represent a player
 @Entity(tableName = "players")
 class Player(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     val name: String,
     val games: MutableList<Game>  = mutableListOf<Game>(),
     val bestGames: MutableList<Game> = mutableListOf<Game>() // The 8 games with the lowest adjusted gross score

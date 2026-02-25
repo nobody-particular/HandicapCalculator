@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.handicapcalculator.classes.Player
 import com.example.handicapcalculator.database.AppDatabase
+import com.example.handicapcalculator.databinding.ActivityMainBinding
 import com.example.handicapcalculator.databinding.ActivityPlayerDetailBinding
 import kotlinx.coroutines.launch
 
@@ -26,6 +28,7 @@ class PlayerDetailActivity : AppCompatActivity() {
         }
 
         binding = ActivityPlayerDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val database = AppDatabase.getDatabase(this)
 
@@ -36,6 +39,7 @@ class PlayerDetailActivity : AppCompatActivity() {
 
             player?.let {
                 binding.titleText.text = it.name
+                binding.idText.text = playerId.toString()
             }
         }
     }

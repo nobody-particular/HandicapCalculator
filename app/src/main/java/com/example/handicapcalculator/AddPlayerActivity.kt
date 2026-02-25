@@ -23,6 +23,9 @@ class AddPlayerActivity : AppCompatActivity() {
             insets
         }
 
+        binding = ActivityAddPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.buttonSave.setOnClickListener {
             val name = binding.editTextName.text.toString()
 
