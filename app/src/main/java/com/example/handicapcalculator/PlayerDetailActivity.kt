@@ -1,5 +1,6 @@
 package com.example.handicapcalculator
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +42,14 @@ class PlayerDetailActivity : AppCompatActivity() {
                 binding.titleText.text = it.name
                 binding.idText.text = playerId.toString()
             }
+        }
+
+        binding.buttonDelete.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("PLAYER_ID", playerId)
+
+            setResult(RESULT_OK, resultIntent)
+            finish()
         }
     }
 }

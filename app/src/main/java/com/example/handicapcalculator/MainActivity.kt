@@ -35,11 +35,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Create a launcher for deleting a player
+        val deletePlayerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val id = result.data?.getIntExtra("PLAYER_ID", -1) ?: -1
+                if (id != -1) {
+                    val player = players.find { it.id == id }
+                    player?.let {
+                        deletePlayer(it)
+                    }
+                }
+            }
+        }
+
         // Create the PlayerAdapter object and detail what happens when a player is clicked
         adapter = PlayerAdapter(players) { clickedPlayer ->
             val intent = Intent(this, PlayerDetailActivity::class.java)
             intent.putExtra("PLAYER_ID", clickedPlayer.id)
-            startActivity(intent)
+            deletePlayerLauncher.launch(intent)
         }
 
         // Set the recyclerView adapter to the PlayerAdapter
@@ -64,8 +77,15 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val name = result.data?.getStringExtra("PLAYER_NAME") ?: ""
 
+                var id = 1
+                for (player in players) {
+                    if (player.id == id) {
+                        id++
+                    }
+                }
+
                 // Create the new player and save it to the database
-                val newPlayer = Player(players.size + 1, name = name)
+                val newPlayer = Player(id, name = name)
                 savePlayer(newPlayer)
             }
         }
@@ -93,5 +113,15 @@ class MainActivity : AppCompatActivity() {
 
     // Delete a player from the database
     private fun deletePlayer(player: Player) {
+        lifecycleScope.launch {
+            // Remove player from database
+            database.playerDao().deletePlayer(player)
+
+            // Notify adapter of the player removed
+            adapter.notifyItemRemoved(players.indexOf(player))
+
+            // Remove player from players
+            players.remove(player)
+        }
     }
 }
