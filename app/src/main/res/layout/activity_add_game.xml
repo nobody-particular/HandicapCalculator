@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddPlayerActivity">
+    tools:context=".AddGameActivity">
 
     <TextView
         android:id="@+id/titleText"
@@ -13,21 +13,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/add_player_title"
+        android:text="@string/add_game_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextName"
+        android:id="@+id/editTextScore"
         android:layout_width="388dp"
         android:layout_height="82dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="324dp"
-        android:autofillHints="name"
+        android:layout_marginTop="424dp"
+        android:autofillHints="number"
         android:ems="10"
-        android:hint="@string/player_name_hint"
-        android:inputType="text"
+        android:hint="@string/game_score_hint"
+        android:inputType="number"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="388dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="228dp"
+        android:autofillHints="date"
+        android:ems="10"
+        android:hint="@string/game_date_hint"
+        android:inputType="date"
+        android:focusable="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +53,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="11dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/save_player_button_text"
+        android:text="@string/save_game_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

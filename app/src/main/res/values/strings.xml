@@ -3,8 +3,12 @@
     <string name="player_list_title">Player List</string>
     <string name="add_player_title">Add Player</string>
     <string name="player_name_hint">Player name…</string>
-    <string name="save_button_text">Save Player</string>
+    <string name="save_player_button_text">Save Player</string>
     <string name="delete_button_text">Delete Player</string>
     <string name="course_handicap_text">Course Handicap: %1$s</string>
     <string name="handicap_index_text">Handicap Index: %1$s</string>
+    <string name="add_game_title">Add Game</string>
+    <string name="game_date_hint">Date...</string>
+    <string name="save_game_button_text">Save Game</string>
+    <string name="game_score_hint">Gross Adjusted Score...</string>
 </resources>

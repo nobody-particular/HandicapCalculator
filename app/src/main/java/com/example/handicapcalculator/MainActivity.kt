@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Launch the launcher when the floating action button is pressed
-        binding.floatingActionButtonAdd.setOnClickListener {
+        binding.floatingActionButtonAddPlayer.setOnClickListener {
             val intent = Intent(this, AddPlayerActivity::class.java)
             addPlayerLauncher.launch(intent)
         }
