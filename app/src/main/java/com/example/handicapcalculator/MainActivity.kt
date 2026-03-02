@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
             database.playerDao().insertPlayer(player)
 
             // Notify adapter of the player inserted
-            adapter.notifyItemInserted(players.size + 1)
+            adapter.notifyItemInserted(players.size)
 
             // Insert player into players
             players.add(player)

@@ -97,7 +97,7 @@ class PlayerDetailActivity : AppCompatActivity() {
                     )
 
                     player?.games?.let {
-                        adapter.notifyItemInserted(it.size + 1)
+                        adapter.notifyItemInserted(it.size)
                         it.add(newGame)
                     }
 
