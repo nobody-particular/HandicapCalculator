@@ -25,6 +25,7 @@ import java.util.Locale
 class PlayerDetailActivity : AppCompatActivity() {
     private lateinit var adapter: GameAdapter
     private lateinit var binding: ActivityPlayerDetailBinding
+    private var player: Player? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,7 @@ class PlayerDetailActivity : AppCompatActivity() {
         val playerId = intent.getIntExtra("PLAYER_ID", -1)
 
         lifecycleScope.launch {
-            val player = database.playerDao().getPlayerById(playerId)
+            player = database.playerDao().getPlayerById(playerId)
 
             player?.let {
                 binding.titleText.text = it.name
@@ -84,8 +85,7 @@ class PlayerDetailActivity : AppCompatActivity() {
                     val date = result.data?.getStringExtra("GAME_DATE") ?: ""
                     val score = result.data?.getIntExtra("GAME_SCORE", 0) ?: 0
 
-                    val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-
+                    val format = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
 
                     val newGame = Game(
                         try {
@@ -96,8 +96,16 @@ class PlayerDetailActivity : AppCompatActivity() {
                         } ?: Date(), score
                     )
 
-                    val player = database.playerDao().getPlayerById(playerId)
-                    player?.games?.add(newGame)
+                    player?.games?.let {
+                        adapter.notifyItemInserted(it.size + 1)
+                        it.add(newGame)
+                    }
+
+                    lifecycleScope.launch {
+                        player?.let {
+                            database.playerDao().updatePlayer(it)
+                        }
+                    }
                 }
             }
 

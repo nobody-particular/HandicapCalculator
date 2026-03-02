@@ -7,6 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.handicapcalculator.R
 import com.example.handicapcalculator.classes.Game
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
 
 class GameAdapter(
     private val games: List<Game>,
@@ -29,7 +33,8 @@ class GameAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game = games[position]
-        holder.dateText.text = game.date.toString()
+        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        holder.dateText.text = formatter.format(game.date)
         holder.differentialText.text = game.calculateHandicapDifferential().toString()
         holder.scoreText.text = game.score.toString()
         holder.itemView.setOnClickListener { onClick(game) }

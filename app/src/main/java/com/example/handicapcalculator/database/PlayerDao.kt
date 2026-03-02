@@ -5,9 +5,10 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.handicapcalculator.classes.Player
 
-// Interface as a Data Access Object (DAO) for defining how to access, insert, and delete players from the database
+// Interface as a Data Access Object (DAO) for defining how to access, insert, update, and delete players from the database
 @Dao
 interface PlayerDao {
     @Query("SELECT * FROM players WHERE id = :playerId")
@@ -18,6 +19,9 @@ interface PlayerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlayer(player: Player)
+
+    @Update
+    suspend fun updatePlayer(vararg players: Player): Int
 
     @Delete
     suspend fun deletePlayer(vararg players: Player)

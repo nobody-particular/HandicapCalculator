@@ -42,7 +42,7 @@ class AddGameActivity : AppCompatActivity() {
                 this,
                 { _, selectedYear, selectedMonth, selectedDay ->
                     // The month value is 0-indexed, so add 1 for display
-                    val selectedDate = "$selectedDay-${selectedMonth + 1}-$selectedYear"
+                    val selectedDate = "${selectedMonth + 1}/$selectedDay/$selectedYear"
                     binding.editTextDate.setText(selectedDate)
                 },
                 year,
@@ -67,17 +67,9 @@ class AddGameActivity : AppCompatActivity() {
         }
     }
 
-    fun getDateFromEditText(): Date? {
+    fun getDateFromEditText(): String? {
         val dateString = binding.editTextDate.text.toString()
         if (dateString.isEmpty()) return null
-
-        // Use the same format used when setting the text
-        val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        return try {
-            format.parse(dateString)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+        return dateString
     }
 }
