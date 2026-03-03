@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -40,10 +41,17 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val id = result.data?.getIntExtra("PLAYER_ID", -1) ?: -1
                 if (id != -1) {
-                    val player = players.find { it.id == id }
-                    player?.let {
-                        deletePlayer(it)
-                    }
+                    AlertDialog.Builder(this)
+                        .setTitle("Delete Player")
+                        .setMessage("Are you sure you want to delete this player?")
+                        .setPositiveButton("Yes") { dialog, which ->
+                            val player = players.find { it.id == id }
+                            player?.let {
+                                deletePlayer(it)
+                            }
+                        }
+                        .setNegativeButton("No", null)
+                        .show()
                 }
             }
         }

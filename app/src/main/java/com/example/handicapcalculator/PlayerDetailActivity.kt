@@ -1,9 +1,11 @@
 package com.example.handicapcalculator
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -60,7 +62,23 @@ class PlayerDetailActivity : AppCompatActivity() {
 
             // Create the GameAdapter object and detail what happens when a game is clicked
             adapter = GameAdapter(player?.games ?: mutableListOf()) { clickedGame ->
-                player?.games?.remove(clickedGame)
+                AlertDialog.Builder(this@PlayerDetailActivity)
+                    .setTitle("Delete Game")
+                    .setMessage("Are you sure you want to delete this game?")
+                    .setPositiveButton("Yes") { dialog, which ->
+                        // Notify adapter of the game removed
+                        adapter.notifyItemRemoved(player?.games?.indexOf(clickedGame) ?: -1)
+
+                        // Remove the game
+                        player?.games?.remove(clickedGame)
+
+                        // Update player in database
+                        lifecycleScope.launch {
+                            player?.let { database.playerDao().updatePlayer(it) }
+                        }
+                    }
+                    .setNegativeButton("No", null)
+                    .show()
             }
 
             // Set the recyclerView adapter to the GameAdapter
