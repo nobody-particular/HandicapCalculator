@@ -2,10 +2,10 @@ package com.example.handicapcalculator.classes
 
 // The course and slope rating of Mr. Donnelly's slope
 const val COURSE_RATING = 70.3
-const val SLOPE_RATING = 126
+const val SLOPE_RATING = 126.0
 
 // Part of the official formula to calculate handicap differential
-const val SLOPE_CONSTANT = 113
+const val SLOPE_CONSTANT = 113.0
 
 val courseHandicapMap = mapOf(
     -5.0 to -7,

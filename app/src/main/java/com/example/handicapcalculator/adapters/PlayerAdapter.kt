@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.handicapcalculator.classes.Player
 import com.example.handicapcalculator.R
+import java.util.Locale
 
 // Class to connect the player list to the recyclerView in the MainActivity
 class PlayerAdapter (
@@ -31,7 +32,7 @@ class PlayerAdapter (
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val player = players[position]
         holder.nameText.text = player.name
-        holder.indexText.text = player.calculateHandicapIndex().toString()
+        holder.indexText.text = String.format(Locale.getDefault(), "%.1f", player.calculateHandicapIndex())
         holder.handicapText.text = player.calculateCourseHandicap().toString()
         holder.itemView.setOnClickListener { onClick(player) }
     }

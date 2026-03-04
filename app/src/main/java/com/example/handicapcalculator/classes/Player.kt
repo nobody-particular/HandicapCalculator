@@ -18,6 +18,7 @@ class Player(
 
     // Place the 8 games with the lowest adjusted gross score in bestGames
     fun findBestGames() {
+        bestGames.clear()
         for (game in games) {
             if (bestGames.size < 8) {
                 bestGames.add(game)

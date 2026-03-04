@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.handicapcalculator.R
 import com.example.handicapcalculator.classes.Game
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
@@ -35,7 +34,7 @@ class GameAdapter(
         val game = games[position]
         val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         holder.dateText.text = formatter.format(game.date)
-        holder.differentialText.text = game.calculateHandicapDifferential().toString()
+        holder.differentialText.text = String.format(Locale.getDefault(), "%.1f", game.calculateHandicapDifferential())
         holder.scoreText.text = game.score.toString()
         holder.itemView.setOnClickListener { onClick(game) }
     }

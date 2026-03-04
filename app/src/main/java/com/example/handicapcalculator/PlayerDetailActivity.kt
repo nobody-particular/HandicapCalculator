@@ -51,13 +51,7 @@ class PlayerDetailActivity : AppCompatActivity() {
 
             player?.let {
                 binding.titleText.text = it.name
-                binding.handicapText.text =
-                    getString(
-                        R.string.course_handicap_text,
-                        it.calculateCourseHandicap().toString()
-                    )
-                binding.indexText.text =
-                    getString(R.string.handicap_index_text, it.calculateHandicapIndex().toString())
+                updateNumbers()
             }
 
             // Create the GameAdapter object and detail what happens when a game is clicked
@@ -75,6 +69,8 @@ class PlayerDetailActivity : AppCompatActivity() {
                         // Update player in database
                         lifecycleScope.launch {
                             player?.let { database.playerDao().updatePlayer(it) }
+
+                            updateNumbers()
                         }
                     }
                     .setNegativeButton("No", null)
@@ -124,6 +120,8 @@ class PlayerDetailActivity : AppCompatActivity() {
                             database.playerDao().updatePlayer(it)
                         }
                     }
+
+                    updateNumbers()
                 }
             }
 
@@ -131,6 +129,22 @@ class PlayerDetailActivity : AppCompatActivity() {
         binding.floatingActionButtonAddGame.setOnClickListener {
             val intent = Intent(this, AddGameActivity::class.java)
             addGameLauncher.launch(intent)
+        }
+    }
+
+    // Update the numbers shown in the title
+    fun updateNumbers() {
+        player?.let {
+            binding.handicapText.text =
+                getString(
+                    R.string.course_handicap_text,
+                    it.calculateCourseHandicap().toString()
+                )
+            binding.indexText.text =
+                getString(
+                    R.string.handicap_index_text,
+                    String.format(Locale.getDefault(), "%.1f", it.calculateHandicapIndex())
+                )
         }
     }
 }

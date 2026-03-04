@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         // Create a launcher for deleting a player
         val deletePlayerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val id = result.data?.getIntExtra("PLAYER_ID", -1) ?: -1
             if (result.resultCode == RESULT_OK) {
-                val id = result.data?.getIntExtra("PLAYER_ID", -1) ?: -1
                 if (id != -1) {
                     AlertDialog.Builder(this)
                         .setTitle("Delete Player")
@@ -52,6 +52,12 @@ class MainActivity : AppCompatActivity() {
                         }
                         .setNegativeButton("No", null)
                         .show()
+                }
+            } else {
+                val index = players.indexOf(players.find { it.id == id })
+
+                if (index >= 0) {
+                    adapter.notifyItemChanged(index)
                 }
             }
         }
@@ -105,17 +111,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launch {
+            // Fetch all players from Room
+            val playersFromDatabase = database.playerDao().getAllPlayers()
+
+            // Update the local list and notify adapter
+            val size = players.size
+            players.clear()
+            adapter.notifyItemRangeRemoved(0, size)
+
+            players.addAll(playersFromDatabase)
+            for (i in 0..<players.size) {
+                adapter.notifyItemInserted(i)
+            }
+        }
+    }
+
     // Save a player to the database
     private fun savePlayer(player: Player) {
         lifecycleScope.launch {
             // Insert player into database
             database.playerDao().insertPlayer(player)
 
-            // Notify adapter of the player inserted
-            adapter.notifyItemInserted(players.size)
+            val index = players.size
 
             // Insert player into players
             players.add(player)
+
+            // Notify adapter of the player inserted
+            adapter.notifyItemInserted(index)
         }
     }
 
@@ -125,11 +152,13 @@ class MainActivity : AppCompatActivity() {
             // Remove player from database
             database.playerDao().deletePlayer(player)
 
-            // Notify adapter of the player removed
-            adapter.notifyItemRemoved(players.indexOf(player))
+            val index = players.indexOf(player)
 
             // Remove player from players
             players.remove(player)
+
+            // Notify adapter of the player removed
+            adapter.notifyItemRemoved(index)
         }
     }
 }
