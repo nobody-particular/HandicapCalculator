@@ -22,7 +22,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="355dp"
-        android:layout_height="608dp"
+        android:layout_height="641dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="72dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,9 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="336dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginTop="656dp"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_add" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -91,12 +91,7 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val name = result.data?.getStringExtra("PLAYER_NAME") ?: ""
 
-                var id = 1
-                for (player in players) {
-                    if (player.id == id) {
-                        id++
-                    }
-                }
+                val id = (players.maxOfOrNull { it.id } ?: 0) + 1
 
                 // Create the new player and save it to the database
                 val newPlayer = Player(id, name = name)

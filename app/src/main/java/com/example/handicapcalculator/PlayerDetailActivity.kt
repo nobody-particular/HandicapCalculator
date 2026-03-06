@@ -52,33 +52,38 @@ class PlayerDetailActivity : AppCompatActivity() {
             player?.let {
                 binding.titleText.text = it.name
                 updateNumbers()
-            }
 
-            // Create the GameAdapter object and detail what happens when a game is clicked
-            adapter = GameAdapter(player?.games ?: mutableListOf()) { clickedGame ->
-                AlertDialog.Builder(this@PlayerDetailActivity)
-                    .setTitle("Delete Game")
-                    .setMessage("Are you sure you want to delete this game?")
-                    .setPositiveButton("Yes") { dialog, which ->
-                        // Notify adapter of the game removed
-                        adapter.notifyItemRemoved(player?.games?.indexOf(clickedGame) ?: -1)
+                // Create the GameAdapter object and detail what happens when a game is clicked
+                adapter = GameAdapter(player!!.games, player!!) { clickedGame ->
+                    AlertDialog.Builder(this@PlayerDetailActivity)
+                        .setTitle("Delete Game")
+                        .setMessage("Are you sure you want to delete this game?")
+                        .setPositiveButton("Yes") { dialog, which ->
+                            val index = player?.games?.indexOf(clickedGame) ?: -1
 
-                        // Remove the game
-                        player?.games?.remove(clickedGame)
+                            // Remove the game
+                            player?.games?.remove(clickedGame)
 
-                        // Update player in database
-                        lifecycleScope.launch {
-                            player?.let { database.playerDao().updatePlayer(it) }
+                            // Notify adapter of the game removed
+                            adapter.notifyItemRemoved(index)
 
-                            updateNumbers()
+                            // Update player in database
+                            lifecycleScope.launch {
+                                player?.let { database.playerDao().updatePlayer(it) }
+
+                                updateNumbers()
+                            }
+
+                            // Notify adapter that all other games may have changed
+                            adapter.notifyItemRangeChanged(0, player!!.games.size)
                         }
-                    }
-                    .setNegativeButton("No", null)
-                    .show()
-            }
+                        .setNegativeButton("No", null)
+                        .show()
+                }
 
-            // Set the recyclerView adapter to the GameAdapter
-            binding.recyclerView.adapter = adapter
+                // Set the recyclerView adapter to the GameAdapter
+                binding.recyclerView.adapter = adapter
+            }
         }
 
         // Set the layoutManager to be linear
@@ -111,8 +116,8 @@ class PlayerDetailActivity : AppCompatActivity() {
                     )
 
                     player?.games?.let {
-                        adapter.notifyItemInserted(it.size)
                         it.add(newGame)
+                        adapter.notifyItemInserted(it.size + 1)
                     }
 
                     lifecycleScope.launch {
@@ -122,6 +127,9 @@ class PlayerDetailActivity : AppCompatActivity() {
                     }
 
                     updateNumbers()
+
+                    // Notify adapter that all other games may have changed
+                    adapter.notifyItemRangeChanged(0, player!!.games.size)
                 }
             }
 
