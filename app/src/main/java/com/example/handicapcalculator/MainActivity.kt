@@ -76,14 +76,13 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             // Fetch all players from Room
-            val playersFromDatabase = database.playerDao().getAllPlayers()
+            val playersFromDatabase = database.playerDao().getAllPlayers().toMutableList().apply { sort() }
 
             // Update the local list and notify adapter
             players.clear()
             players.addAll(playersFromDatabase)
-            for (i in 0..<players.size) {
-                adapter.notifyItemInserted(i)
-            }
+
+            adapter.notifyDataSetChanged()
         }
 
         // Create a launcher for adding a player
@@ -111,17 +110,13 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             // Fetch all players from Room
-            val playersFromDatabase = database.playerDao().getAllPlayers()
+            val playersFromDatabase = database.playerDao().getAllPlayers().toMutableList().apply { sort() }
 
             // Update the local list and notify adapter
-            val size = players.size
             players.clear()
-            adapter.notifyItemRangeRemoved(0, size)
-
             players.addAll(playersFromDatabase)
-            for (i in 0..<players.size) {
-                adapter.notifyItemInserted(i)
-            }
+
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -131,10 +126,12 @@ class MainActivity : AppCompatActivity() {
             // Insert player into database
             database.playerDao().insertPlayer(player)
 
-            val index = players.size
-
             // Insert player into players
             players.add(player)
+
+            players.sort()
+
+            val index = players.size + 1
 
             // Notify adapter of the player inserted
             adapter.notifyItemInserted(index)

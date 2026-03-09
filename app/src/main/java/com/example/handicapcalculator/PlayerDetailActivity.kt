@@ -1,6 +1,5 @@
 package com.example.handicapcalculator
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -12,11 +11,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.handicapcalculator.adapters.GameAdapter
-import com.example.handicapcalculator.adapters.PlayerAdapter
 import com.example.handicapcalculator.classes.Game
 import com.example.handicapcalculator.classes.Player
 import com.example.handicapcalculator.database.AppDatabase
-import com.example.handicapcalculator.databinding.ActivityMainBinding
 import com.example.handicapcalculator.databinding.ActivityPlayerDetailBinding
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -106,7 +103,7 @@ class PlayerDetailActivity : AppCompatActivity() {
 
                     val format = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
 
-                    val newGame = Game(
+                    val game = Game(
                         try {
                             format.parse(date)
                         } catch (e: Exception) {
@@ -116,8 +113,19 @@ class PlayerDetailActivity : AppCompatActivity() {
                     )
 
                     player?.games?.let {
-                        it.add(newGame)
-                        adapter.notifyItemInserted(it.size + 1)
+                        it.add(0, game)
+
+                        it.sortDescending()
+
+                        adapter.notifyItemInserted(it.indexOf(game))
+
+                        if (it.size > 20) {
+                            val lastIndex = it.size - 1
+
+                            it.removeAt(lastIndex)
+
+                            adapter.notifyItemRemoved(lastIndex)
+                        }
                     }
 
                     lifecycleScope.launch {
