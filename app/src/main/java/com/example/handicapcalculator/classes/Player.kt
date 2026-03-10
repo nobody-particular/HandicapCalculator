@@ -2,6 +2,7 @@ package com.example.handicapcalculator.classes
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.math.RoundingMode
 
 // Class to represent a player
 @Entity(tableName = "players")
@@ -45,7 +46,7 @@ class Player(
 
     // Find the course handicap with the handicap index
     fun calculateCourseHandicap() : Int {
-        val handicapIndex = calculateHandicapIndex()
+        val handicapIndex = calculateHandicapIndex().toBigDecimal().setScale(1, RoundingMode.HALF_UP).toDouble()
         for ((min, handicap) in courseHandicapMap) {
             if (handicapIndex < min) {
                 return handicap - 1
