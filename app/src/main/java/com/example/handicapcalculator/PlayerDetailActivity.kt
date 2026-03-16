@@ -22,10 +22,16 @@ import java.util.Locale
 
 // Activity for displaying the game list for a player
 class PlayerDetailActivity : AppCompatActivity() {
+    // An adapter to connect the mutableList to the recyclerView
     private lateinit var adapter: GameAdapter
+
+    // The binding for the activity, which references all the UI elements
     private lateinit var binding: ActivityPlayerDetailBinding
+
+    // The player whose details are being shown
     private var player: Player? = null
 
+    // What should happen when the activity is started
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,6 +50,7 @@ class PlayerDetailActivity : AppCompatActivity() {
         val playerId = intent.getIntExtra("PLAYER_ID", -1)
 
         lifecycleScope.launch {
+            // Get the player from the database
             player = database.playerDao().getPlayerById(playerId)
 
             player?.let {
@@ -86,6 +93,7 @@ class PlayerDetailActivity : AppCompatActivity() {
         // Set the layoutManager to be linear
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // What should happen when the "Delete" button is clicked
         binding.buttonDelete.setOnClickListener {
             val resultIntent = Intent()
             resultIntent.putExtra("PLAYER_ID", playerId)
@@ -103,6 +111,8 @@ class PlayerDetailActivity : AppCompatActivity() {
 
                     val format = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
 
+                    // Try to make a game with the parsed date
+                    // If the parse is unsuccessful, then set date to today
                     val game = Game(
                         try {
                             format.parse(date)
@@ -113,12 +123,15 @@ class PlayerDetailActivity : AppCompatActivity() {
                     )
 
                     player?.games?.let {
+                        // Add the game and sort
                         it.add(0, game)
 
                         it.sortDescending()
 
+                        // Notify the adapter of the added game
                         adapter.notifyItemInserted(it.indexOf(game))
 
+                        // Remove the last game if the size is more than 20
                         if (it.size > 20) {
                             val lastIndex = it.size - 1
 
@@ -128,6 +141,7 @@ class PlayerDetailActivity : AppCompatActivity() {
                         }
                     }
 
+                    // Update the player in the database
                     lifecycleScope.launch {
                         player?.let {
                             database.playerDao().updatePlayer(it)

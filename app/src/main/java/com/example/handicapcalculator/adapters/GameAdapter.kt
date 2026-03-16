@@ -11,19 +11,20 @@ import com.example.handicapcalculator.classes.Player
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
+// Class to connect the game list to the recyclerView in the PlayerDetailActivity
 class GameAdapter(
     private val games: List<Game>,
     private val player: Player,
     private val onClick: (Game) -> Unit
 ) : RecyclerView.Adapter<GameAdapter.ViewHolder>() {
-
+    // Constructor for the viewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val dateText: TextView = view.findViewById(R.id.playerName)
         val scoreText: TextView = view.findViewById(R.id.playerHandicap)
         val differentialText: TextView = view.findViewById(R.id.playerIndex)
     }
 
+    // What should happen when the viewHolder is started
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -32,6 +33,7 @@ class GameAdapter(
         return ViewHolder(view)
     }
 
+    // What should happen when the viewHolder is bound to the recyclerView
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game = games[position]
         val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())

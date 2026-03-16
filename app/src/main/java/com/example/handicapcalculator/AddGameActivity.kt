@@ -8,15 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.handicapcalculator.databinding.ActivityAddGameBinding
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 // Activity for adding a game
 class AddGameActivity : AppCompatActivity() {
+    // The binding for the activity, which references all the UI elements
     private lateinit var binding: ActivityAddGameBinding
 
+    // What should happen when the activity is started
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +29,7 @@ class AddGameActivity : AppCompatActivity() {
         binding = ActivityAddGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // What should happen when the "Date..." editText is clicked
         binding.editTextDate.setOnClickListener {
             // Get current date
             val calendar = Calendar.getInstance()
@@ -52,10 +52,12 @@ class AddGameActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
+        // What should happen when the "Save Game" button is clicked
         binding.buttonSave.setOnClickListener {
             val date = getDateFromEditText()
             val score = binding.editTextScore.text.toString().toIntOrNull()
 
+            // Pass the date and the score as extras back to PlayerDetailActivity
             if (date != null && score != null) {
                 val resultIntent = Intent()
                 resultIntent.putExtra("GAME_DATE", date)
@@ -67,6 +69,7 @@ class AddGameActivity : AppCompatActivity() {
         }
     }
 
+    // Get the date string from the "Date..." editText and return it
     fun getDateFromEditText(): String? {
         val dateString = binding.editTextDate.text.toString()
         if (dateString.isEmpty()) return null

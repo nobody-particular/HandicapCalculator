@@ -11,8 +11,10 @@ import com.example.handicapcalculator.databinding.ActivityMainBinding
 
 // Activity for adding a player
 class AddPlayerActivity : AppCompatActivity() {
+    // The binding for the activity, which references all the UI elements
     private lateinit var binding: ActivityAddPlayerBinding
 
+    // What should happen when the activity is started
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -26,9 +28,11 @@ class AddPlayerActivity : AppCompatActivity() {
         binding = ActivityAddPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // What should happen when the "Save Player" button is clicked
         binding.buttonSave.setOnClickListener {
             val name = binding.editTextName.text.toString()
 
+            // Pass the name as an extra back to MainActivity
             if (name.isNotEmpty()) {
                 val resultIntent = Intent()
                 resultIntent.putExtra("PLAYER_NAME", name)

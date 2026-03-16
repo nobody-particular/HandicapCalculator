@@ -14,13 +14,14 @@ class PlayerAdapter (
     private val players: List<Player>,
     private val onClick: (Player) -> Unit
 ) : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
-
+    // Constructor for the viewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameText: TextView = view.findViewById(R.id.playerName)
         val handicapText: TextView = view.findViewById(R.id.playerHandicap)
         val indexText: TextView = view.findViewById(R.id.playerIndex)
     }
 
+    // What should happen when the viewHolder is started
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -29,6 +30,7 @@ class PlayerAdapter (
         return ViewHolder(view)
     }
 
+    // What should happen when the viewHolder is bound to the recyclerView
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val player = players[position]
         holder.nameText.text = player.name

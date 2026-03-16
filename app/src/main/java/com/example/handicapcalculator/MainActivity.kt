@@ -18,11 +18,19 @@ import kotlinx.coroutines.launch
 
 // Activity for displaying the player list
 class MainActivity : AppCompatActivity() {
+    // A mutableList that temporarily stores the players for while the activity is active
     private var players = mutableListOf<Player>()
+
+    // An adapter to connect the mutableList to the recyclerView
     private lateinit var adapter: PlayerAdapter
+
+    // The binding for the activity, which references all the UI elements
     private lateinit var binding: ActivityMainBinding
+
+    // The database, which stores all the players
     private val database by lazy { AppDatabase.getDatabase(this) }
 
+    // What should happen when the activity is started
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         val deletePlayerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val id = result.data?.getIntExtra("PLAYER_ID", -1) ?: -1
             if (result.resultCode == RESULT_OK) {
+                // Confirm the deletion of the player with the user
                 if (id != -1) {
                     AlertDialog.Builder(this)
                         .setTitle("Delete Player")
@@ -54,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                         .show()
                 }
             } else {
+                // Update the display of the player that was clicked
                 val index = players.indexOf(players.find { it.id == id })
 
                 if (index >= 0) {
@@ -105,6 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // What should happen when the activity is unpaused
     override fun onResume() {
         super.onResume()
 

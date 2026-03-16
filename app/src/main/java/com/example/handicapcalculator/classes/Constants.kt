@@ -7,6 +7,7 @@ const val SLOPE_RATING = 126.0
 // Part of the official formula to calculate handicap differential
 const val SLOPE_CONSTANT = 113.0
 
+// The lower bounds for each course handicap, according to the USGA
 val courseHandicapMap = mapOf(
     -5.0 to -7,
     -4.3 to -6,
