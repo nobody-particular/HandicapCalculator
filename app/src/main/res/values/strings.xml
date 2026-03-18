@@ -8,7 +8,8 @@
     <string name="course_handicap_text">Course Handicap: %1$s</string>
     <string name="handicap_index_text">Handicap Index: %1$s</string>
     <string name="add_game_title">Add Game</string>
-    <string name="game_date_hint">Date...</string>
+    <string name="game_date_hint">Date…</string>
     <string name="save_game_button_text">Save Game</string>
-    <string name="game_score_hint">Gross Adjusted Score...</string>
+    <string name="game_score_hint">Score…</string>
+    <string name="floating_action_button_description">Plus sign</string>
 </resources>
