@@ -7,7 +7,7 @@ import java.math.RoundingMode
 // Class to represent a player
 @Entity(tableName = "players")
 class Player(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val games: MutableList<Game>  = mutableListOf<Game>(),
     val bestGames: MutableList<Game> = mutableListOf<Game>() // The 8 games with the lowest adjusted gross score

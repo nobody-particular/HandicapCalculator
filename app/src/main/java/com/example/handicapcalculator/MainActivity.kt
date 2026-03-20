@@ -100,10 +100,8 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val name = result.data?.getStringExtra("PLAYER_NAME") ?: ""
 
-                val id = (players.maxOfOrNull { it.id } ?: 0) + 1
-
                 // Create the new player and save it to the database
-                val newPlayer = Player(id, name = name)
+                val newPlayer = Player(name = name)
                 savePlayer(newPlayer)
             }
         }
@@ -137,15 +135,14 @@ class MainActivity : AppCompatActivity() {
             // Insert player into database
             database.playerDao().insertPlayer(player)
 
-            // Insert player into players
-            players.add(player)
+            // Fetch all players from Room
+            val playersFromDatabase = database.playerDao().getAllPlayers().toMutableList().apply { sort() }
 
-            players.sort()
+            // Update the local list and notify adapter
+            players.clear()
+            players.addAll(playersFromDatabase)
 
-            val index = players.size + 1
-
-            // Notify adapter of the player inserted
-            adapter.notifyItemInserted(index)
+            adapter.notifyDataSetChanged()
         }
     }
 
